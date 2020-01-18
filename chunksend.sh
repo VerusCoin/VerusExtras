@@ -9,18 +9,15 @@
 
 #First arg - address to send to
 #Second arg - amount to send
-#Third arg - size of chunks - defaults to 1000 if not set
+#Third arg - size of chunks - defaults to 2500 if not set
 
-VERUS=~/verus-cli/verus
-
-if [ ! -x $VERUS ]; then
-    echo "It looks like $VERUS doesn't exist, or isn't executable. Edit the value of VERUS on line 6 to reflect an accurate path to the Verus CLI RPC executable."
+if ! source "$( dirname "${BASH_SOURCE[0]}" )"/config; then
+    echo "Failed to source config file. Please make sure you have the whole VerusExtras repo or at least also have the config file."
     exit 1
 fi
 
 #Check for bc dependency
-bc --version &> /dev/null
-if [ $? -eq 127 ]; then
+if ! command -v bc &> /dev/null ; then
     echo "Please install bc (a command-line calculator)"
     exit 1
 fi
@@ -46,7 +43,7 @@ fi
 
 CHUNK=$3
 #set a default value if CHUNK is null
-CHUNK=${CHUNK:-1000}
+CHUNK=${CHUNK:-2500}
 
 SENT=0
 
